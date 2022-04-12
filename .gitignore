@@ -10,7 +10,7 @@
 
 # production
 /build
-
+/simonsGloble
 # misc
 .idea/
 .DS_Store
