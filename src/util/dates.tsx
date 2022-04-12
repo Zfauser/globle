@@ -7,5 +7,4 @@ export function dateDiffInDays(day1: string, day2: string) {
   const diff = Math.floor((utc2 - utc1) / MS_PER_DAY);
   return diff;
 }
-
 export const today = new Date().toLocaleDateString("en-CA");

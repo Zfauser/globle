@@ -123,7 +123,7 @@ export type Country = {
       };
 };
 
-type LanguageName =
+export type LanguageName =
   | "NAME_AR"
   | "NAME_BN"
   | "NAME_DE"

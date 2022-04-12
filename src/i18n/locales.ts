@@ -1,5 +1,5 @@
 import { LanguageName } from "../lib/country";
-import { Locale, LocaleMessages } from "../lib/locale";
+import { Locale } from "../lib/locale";
 import { English } from "./messages/en-CA";
 import { Spanish } from "./messages/es-MX";
 

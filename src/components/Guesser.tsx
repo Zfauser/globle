@@ -1,11 +1,10 @@
 import { FormEvent, useContext, useState } from "react";
-import { Country, LanguageName } from "../lib/country";
+import { Country } from "../lib/country";
 import { answerCountry, answerName } from "../util/answer";
 import { Message } from "./Message";
 import { polygonDistance } from "../util/distance";
 import alternateNames from "../data/alternate_names.json";
 import { LocaleContext } from "../i18n/LocaleContext";
-import { Locale } from "../lib/locale";
 import localeList from "../i18n/messages";
 import { FormattedMessage } from "react-intl";
 import { langNameMap } from "../i18n/locales";
@@ -104,6 +103,7 @@ export default function Guesser({ guesses, setGuesses, win, setWin }: Props) {
           autoComplete="new-password"
         />
         <button
+          title='Guess country'
           className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white 
           font-bold py-1 md:py-2 px-4 rounded focus:shadow-outline "
           type="submit"
