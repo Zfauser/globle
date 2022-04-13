@@ -9,6 +9,8 @@ import localeList from "../i18n/messages";
 import { FormattedMessage } from "react-intl";
 import { langNameMap } from "../i18n/locales";
 const countryData: Country[] = require("../data/country_data.json").features;
+const minGuessLength = 2;
+const suggestionLimit = 3;
 
 type Props = {
   guesses: Country[];
@@ -23,6 +25,24 @@ export default function Guesser({ guesses, setGuesses, win, setWin }: Props) {
   const { locale } = useContext(LocaleContext);
 
   const langName = langNameMap[locale];
+
+  function getSuggestions(value: string) {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    
+    if (inputLength >= minGuessLength) {
+      let suggestions: Country[] = [];
+      suggestions = countryData.filter(country => {
+        const countryName = country.properties.NAME.toLowerCase();
+        if (countryName !== inputValue) {
+          return countryName.slice(0, inputLength) === inputValue;
+        }
+        return [];
+      });
+      return suggestions.slice(0,suggestionLimit);
+    }
+    return [];
+  }
 
   function findCountry(countryName: string, list: Country[]) {
     return list.find((country) => {
@@ -85,14 +105,14 @@ export default function Guesser({ guesses, setGuesses, win, setWin }: Props) {
     <div className="mt-10 mb-6 block mx-auto text-center">
       <form
         onSubmit={addGuess}
-        className="w-80 flex space-x-4 mx-auto my-2 justify-center"
+        className="w-80 flex space-x-4 mx-auto my-2 justify-center flex-wrap"
       >
         <input
           className="shadow px-2 py-1 md:py-0
           text-gray-700 dark:bg-slate-300 focus:outline-none 
           focus:shadow-outline disabled:bg-slate-400
           border rounded disabled:border-slate-400
-          w-full"
+          w-full flex-1"
           type="text"
           name="guesser"
           id="guesser"
@@ -102,6 +122,7 @@ export default function Guesser({ guesses, setGuesses, win, setWin }: Props) {
           placeholder={guesses.length === 0 ? localeList[locale]["Game1"] : ""}
           autoComplete="new-password"
         />
+        
         <button
           title='Guess country'
           className="bg-blue-700 dark:bg-purple-800 hover:bg-blue-900 dark:hover:bg-purple-900 disabled:bg-blue-900  text-white 
@@ -111,6 +132,23 @@ export default function Guesser({ guesses, setGuesses, win, setWin }: Props) {
         >
           <FormattedMessage id="Game2" />
         </button>
+
+        <div className="shadow px-2 py-0
+          text-gray-700 dark:bg-slate-300 focus:outline-none 
+          focus:shadow-outline disabled:bg-slate-400
+          rounded disabled:border-slate-400
+          w-full bg-white !mx-0"
+        >
+          {getSuggestions(guessName).map(country => {
+            return (
+              <div
+              className="text-left" 
+              key={country.properties.ADMIN}
+              onClick={() => {setGuessName(country.properties.NAME)}}
+              >{country.properties.NAME}</div>
+            )
+          })}
+        </div>
       </form>
       <Message win={win} error={error} guesses={guesses.length} />
     </div>
